@@ -1,0 +1,66 @@
+#%RAML 1.0
+title: Retrieve_Travel_On_Tip_Routes_And_Schedule_SAPI
+description: Retrieves Routes and Schedules from Travel On Tip System
+
+uses:
+  common: /libraries/common/commonBusiness_library.raml
+  routes: /libraries/routes/commonBusiness_library.raml
+  schedules: /libraries/schedules/commonBusiness_library.raml
+
+/{transportType}:
+  /{transportCompany}:
+    /routes:
+      get:
+        description: This method retrieves all the booking data
+        is:
+          - common.header_transactionId
+        responses:
+          200:
+            body:
+              application/json:
+                type: routes.getRoutes_200_dataType
+                example: !include /libraries/routes/examples/getRoutes_200_example.json
+          400:
+            body:
+              application/json:
+                type: common.400_response_dataType
+                example: !include /libraries/common/examples/400_response_example.json
+          404:
+            body:
+              application/json:
+                type: common.404_response_dataType
+                example: !include /libraries/common/examples/404_response_example.json
+          500:
+            body:
+              application/json:
+                type: common.500_response_dataType
+                example: !include /libraries/common/examples/500_response_example.json
+
+    /schedules:
+      get:
+        description: This method retrieves all the booking data
+        is:
+          - common.header_transactionId
+          - common.queryParam_departureLocationCode
+          - common.queryParam_destinationLocationCode
+        responses:
+          200:
+            body:
+              application/json:
+                type: schedules.getSchedules_200_dataType
+                example: !include /libraries/schedules/examples/departureSchedule_200_example.json
+          400:
+            body:
+              application/json:
+                type: common.400_response_dataType
+                example: !include /libraries/common/examples/400_response_example.json
+          404:
+            body:
+              application/json:
+                type: common.404_response_dataType
+                example: !include /libraries/common/examples/404_response_example.json
+          500:
+            body:
+              application/json:
+                type: common.500_response_dataType
+                example: !include /libraries/common/examples/500_response_example.json

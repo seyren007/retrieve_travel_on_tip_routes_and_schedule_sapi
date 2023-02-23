@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<http:listener-config name="retrieve_travel_on_tip_routes_and_schedule_sapi-httpListenerConfig">
+        <http:listener-connection host="${http.listener.host}" port="${http.listener.port}" readTimeout="400000"/>
+    </http:listener-config>
+    <apikit:config name="retrieve_travel_on_tip_routes_and_schedule_sapi-config" api="retrieve_travel_on_tip_routes_and_schedule_sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<configuration-properties doc:name="Configuration properties" doc:id="1f512d01-bf5d-4235-9890-5c112f856871" file="config\local.yaml" />
+	<http:request-config name="HTTP_Request_configuration_travelOnTip" doc:name="HTTP Request configuration" doc:id="8f464ede-1de5-44c6-b61a-2ea2ef1be3c2" responseTimeout="400000">
+		<http:request-connection host="${http.requester.host}" port="${http.requester.port}" connectionIdleTimeout="400000"/>
+	</http:request-config>
+	<configuration doc:name="Configuration" doc:id="751def5a-f782-4a2b-bc81-a954e4a345aa" defaultErrorHandler-ref="globalErrorHandlerError_Handler" />
+	
+</mule>

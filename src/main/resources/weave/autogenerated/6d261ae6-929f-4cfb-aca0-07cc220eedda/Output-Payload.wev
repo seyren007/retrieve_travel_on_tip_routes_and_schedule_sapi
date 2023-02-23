@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_6d261ae6_929f_4cfb_aca0_07cc220eedda_Output_Payload = Array<{  destinationLocation: {    locationCode: String,     _?: Any  } {"description": "End of the route"},   originLocation: {    locationCode: String,     _?: Any  } {"description": "Starting route"},   _?: Any}>
+

@@ -1,0 +1,24 @@
+#%RAML 1.0 DataType
+
+type: array
+items: 
+  type: object
+  properties:
+    originLocation:
+      description: Starting route
+      type: object
+      properties:
+        locationCode:
+          description: Code of the location
+          type: string
+          example: "BEN-SG"
+          required: true
+    destinationLocation:
+      description: End of the route
+      type: object
+      properties:
+          locationCode:
+            description: Code of the location
+            type: string
+            example: "BEN-SG"
+            required: true

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    
+    <flow name="retrieve_travel_on_tip_routes_and_schedule_sapi-main">
+        <http:listener path="/api/*" config-ref="retrieve_travel_on_tip_routes_and_schedule_sapi-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="retrieve_travel_on_tip_routes_and_schedule_sapi-config"/>
+		<error-handler ref="globalErrorHandlerError_Handler" />
+    </flow>
+	<flow name="retrieve_travel_on_tip_routes_and_schedule_sapi-console">
+        <http:listener path="/console/*" config-ref="retrieve_travel_on_tip_routes_and_schedule_sapi-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="retrieve_travel_on_tip_routes_and_schedule_sapi-config"/>
+		<error-handler ref="globalErrorHandlerError_Handler" />
+    </flow>
+    <sub-flow name="retrieve_travel_on_tip_routes_and_schedule_sapi_initializeRequestVariable_Sub_Flow" doc:id="6d261ae6-929f-4cfb-aca0-07cc220eedda" >
+		<ee:transform doc:name="Request Variable">
+            <ee:variables>
+                <ee:set-variable variableName="transportType"><![CDATA[attributes.uriParams.'transportType']]></ee:set-variable>
+                <ee:set-variable variableName="transportCompany"><![CDATA[attributes.uriParams.'transportCompany']]></ee:set-variable>
+				<ee:set-variable variableName="transactionId"><![CDATA[%dw 2.0
+output application/java
+---
+attributes.headers.transactionId]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+	</sub-flow>
+	<flow name="get:\(transportType)\(transportCompany)\routes:retrieve_travel_on_tip_routes_and_schedule_sapi-config">
+		<flow-ref doc:name="Initialize Request Variable" doc:id="cd4082cb-e2fe-475d-bccd-8e8df8cfee79" name="retrieve_travel_on_tip_routes_and_schedule_sapi_initializeRequestVariable_Sub_Flow"/>
+		<flow-ref doc:name="Flow Reference" doc:id="26ff8302-2224-405a-b38d-bd410d41dd36" name="travelOnTip-getRoutes-implementationSub_Flow"/>
+    </flow>
+    <flow name="get:\(transportType)\(transportCompany)\schedules:retrieve_travel_on_tip_routes_and_schedule_sapi-config">
+		<flow-ref doc:name="Initialize Request Variable" doc:id="678bd42f-4c15-4ff2-8b3e-4a59e10ea8a7" name="retrieve_travel_on_tip_routes_and_schedule_sapi_initializeRequestVariable_Sub_Flow"/>
+		<flow-ref doc:name="Flow Reference" doc:id="72980e83-55a5-4eae-89a1-2e701d9263f7" name="travelOnTip-getSchedules-implementationSub_Flow"/>
+    </flow>
+</mule>

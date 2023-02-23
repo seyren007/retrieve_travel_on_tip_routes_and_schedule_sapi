@@ -1,0 +1,13 @@
+#%RAML 1.0 Library
+usage:
+
+traits:
+  header_transactionId: !include /libraries/common/traits/headers_transactionId.raml
+  queryParam_departureLocationCode: !include /libraries/common/traits/queryParam_departureLocationCode.raml
+  queryParam_destinationLocationCode: !include /libraries/common/traits/queryParam_destinationLocationCode.raml
+
+types:
+  getSchedules_200_dataType: !include /libraries/schedules/dataTypes/getSchedules_200_dataType.raml
+  400_response_dataType: !include /libraries/common/dataTypes/400_response_dataType.raml
+  404_response_dataType: !include /libraries/common/dataTypes/404_response_dataType.raml
+  500_response_dataType: !include /libraries/common/dataTypes/500_response_dataType.raml
